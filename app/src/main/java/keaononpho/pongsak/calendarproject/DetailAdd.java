@@ -10,6 +10,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+import java.util.Calendar;
+
 public class DetailAdd extends AppCompatActivity {
 
     //Expels
@@ -18,7 +29,7 @@ public class DetailAdd extends AppCompatActivity {
     private String[] loginStrings;
     private EditText editText;
     private TimePicker timePicker;
-
+    private static final String urlPHP = "http://swiftcodingthai.com/aee/add_detail.php";
 
 
 
@@ -42,6 +53,10 @@ public class DetailAdd extends AppCompatActivity {
         idCardTextView.setText("ID Card  = " + loginStrings[3]);
         dateTextView.setText("Date = " + dateString);
 
+        //Set Current Time
+        Calendar calendar = Calendar.getInstance();
+        timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
 
 
 
@@ -96,6 +111,34 @@ public class DetailAdd extends AppCompatActivity {
     }   // confirm
 
     private void uploadToServer() {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = new FormEncodingBuilder()
+                .add("isAdd", "true")
+                .add("ID_Card", idcardString)
+                .add("Date", dateString)
+                .add("Time", timeString)
+                .add("Detail", detailString)
+                .build();
+        Request.Builder builder = new Request.Builder();
+        Request request = builder.url(urlPHP).post(requestBody).build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("9JuneV2", "e ==>" + e.toString());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                finish();
+            }
+        });
+
+
+
+
+
 
     }   // upload
 
