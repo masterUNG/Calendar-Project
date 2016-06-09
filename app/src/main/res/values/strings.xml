@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">24 Calendar</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_register">Register</string>
+</resources>
