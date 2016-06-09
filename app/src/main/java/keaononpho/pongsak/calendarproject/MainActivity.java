@@ -1,5 +1,8 @@
 package keaononpho.pongsak.calendarproject;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
         bindWidget();
 
         listValue = new ArrayList<String>();
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int hr = calendar.get(Calendar.HOUR_OF_DAY);
+        int minius = calendar.get(Calendar.MINUTE) + 1;
+
+        setupDateAnTimeforAlarm(day, month, year, hr, minius);
 
 
 
@@ -78,6 +91,53 @@ public class MainActivity extends AppCompatActivity {
         synJSONtoSQLite();
 
     }   // Main Method
+
+    private void setupDateAnTimeforAlarm(int intDay,
+                                         int intMonth,
+                                         int intYear,
+                                         int intHr,
+                                         int intMinis) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        Log.d("9JuneV4", "calendar ตั่งต้น ==> " + calendar.toString());
+
+        calendar.set(Calendar.DAY_OF_MONTH, intDay);
+        calendar.set(Calendar.MONTH, intMonth);
+        calendar.set(Calendar.YEAR, intYear);
+        calendar.set(Calendar.HOUR_OF_DAY, intHr);
+        calendar.set(Calendar.MINUTE, intMinis);
+        calendar.set(Calendar.SECOND, 0);
+
+        Log.d("9JuneV4", "calendar ตัวส่ง ==> " + calendar.toString());
+
+        setAlarm(calendar);
+
+
+    }
+
+
+    private void setAlarm(Calendar targetCal){
+
+        listValue.add(targetCal.getTime()+"");
+
+
+
+        final int _id = (int) System.currentTimeMillis();
+
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), _id, intent, 0);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
+
+    }   // setAlarm
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }   // onResume
+
 
     @Override
     protected void onRestart() {
