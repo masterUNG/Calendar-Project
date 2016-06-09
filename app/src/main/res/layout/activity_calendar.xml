@@ -8,18 +8,6 @@
     tools:context="keaononpho.pongsak.calendarproject.CalendarActivity"
     android:background="@drawable/bg6">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="B A C K"
-        android:id="@+id/btnBackCal"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:background="#ffffff"
-        android:onClick="clickBackMyCalendar"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="true" />
-
     <CalendarView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,6 +17,40 @@
         android:clickable="false"
         android:touchscreenBlocksFocus="false"
         android:layout_margin="20dp"
-        android:layout_above="@+id/btnBackCal" />
+        android:layout_above="@+id/linBottonCal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linBottonCal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="B A C K"
+            android:id="@+id/btnBackCal"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:background="#ffffff"
+            android:onClick="clickBackMyCalendar"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Select date"
+            android:id="@+id/button10"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:background="#ffffff"
+            android:onClick="clickSelectDateCalendar"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </RelativeLayout>
