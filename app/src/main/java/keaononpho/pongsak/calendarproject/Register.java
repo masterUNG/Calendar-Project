@@ -31,10 +31,7 @@ public class Register extends AppCompatActivity {
     private RadioButton maleRadioButton, femaleRadioButton;
     private String userString, passwordString, idCardString, emailString, sexString;
 
-    @Override
-    public void onProvideAssistData(Bundle data) {
-        super.onProvideAssistData(data);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
