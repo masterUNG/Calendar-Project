@@ -2,9 +2,12 @@ package keaononpho.pongsak.calendarproject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -84,14 +87,37 @@ public class Register extends AppCompatActivity {
                     "กรุณากรอกให้ครบทุกช่อง ");
 
 
+        } else if (idCardString.length() != 13) {
+            MyAlert myAlert = new MyAlert();
+            myAlert.myDialog(this, "ระหัสประจำตััวผิด", "พิมพ์ ระหัสใหม่ ต้องมี 13 หลัก");
+        } else if (checkIDcard()) {
+            // ID card ซ้ำ
+            MyAlert myAlert = new MyAlert();
+            myAlert.myDialog(this, "ID Card ซ้ำ", "ID Card นี่เคยสมัครแล้ว");
+
         } else {
-            //No Space
-
             comfirmDialog();
-        }// if
-
+        }
 
     } // clickOK
+
+    private boolean checkIDcard() {
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(MyOpenHelper.database_name,
+                    MODE_PRIVATE, null);
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM userTABLE WHERE ID_card = " + "'" + idCardString + "'", null);
+            cursor.moveToFirst();
+            Log.d("9JuneV2", "ID card ==> " + cursor.getString(3));
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+
+    }
 
     private void comfirmDialog() {
         String strSpace = "\n";

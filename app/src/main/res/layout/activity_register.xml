@@ -89,7 +89,8 @@
                 android:layout_gravity="center_horizontal"
                 android:hint="id number"
                 android:gravity="center_horizontal"
-                android:textColorHint="#bcb1b1" />
+                android:textColorHint="#bcb1b1"
+                android:inputType="number" />
 
             <TextView
                 android:layout_width="wrap_content"
