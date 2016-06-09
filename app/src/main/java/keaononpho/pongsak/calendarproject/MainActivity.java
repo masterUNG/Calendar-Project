@@ -17,13 +17,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -34,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private String userString, passwordString;
     private MyManage myManage;
     public static ArrayList<String> listValue;
-
+    private int dayAnInt, monthAnInt, yearAnInt, hrAnInt, minusAnInt;
+    private int month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +53,15 @@ public class MainActivity extends AppCompatActivity {
         listValue = new ArrayList<String>();
 
         Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         int hr = calendar.get(Calendar.HOUR_OF_DAY);
         int minius = calendar.get(Calendar.MINUTE) + 1;
 
-        setupDateAnTimeforAlarm(day, month, year, hr, minius);
+        //setupDateAnTimeforAlarm(day, month, year, hr, minius);
 
+        //alarmByMyData();
 
 
         //Request SQLite
@@ -92,6 +99,72 @@ public class MainActivity extends AppCompatActivity {
 
     }   // Main Method
 
+    private void alarmByMyData(String resultString) {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = new FormEncodingBuilder()
+                .add("isAdd", "true")
+                .add("ID_Card", resultString)
+                .build();
+        Request.Builder builder = new Request.Builder();
+        Request request = builder.url("http://swiftcodingthai.com/aee/get_detail_where.php").post(requestBody).build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                String strJSON = response.body().string();
+                Log.d("9JuneV5", "strJSON ==> " + strJSON);
+                try {
+
+                    JSONArray jsonArray = new JSONArray(strJSON);
+
+                    for (int i=0;i<jsonArray.length();i++) {
+
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        String[] myDate = jsonObject.getString("Date").split("/");
+                        String[] myTime = jsonObject.getString("Time").split(":");
+                        int myMonth = Integer.parseInt(myDate[1]) - 1;
+                        int myDay = Integer.parseInt(myDate[0]);
+                        yearAnInt = Integer.parseInt(myDate[2]);
+                        hrAnInt = Integer.parseInt(myTime[0]);
+                        minusAnInt = Integer.parseInt(myTime[1]);
+
+                        if (myMonth == month) {
+                            if (myDay >= day) {
+                                dayAnInt = myDay;
+                                monthAnInt = myMonth;
+                                setupDateAnTimeforAlarm(dayAnInt, monthAnInt,
+                                        yearAnInt, hrAnInt, minusAnInt);
+                            }
+                        } else if (myMonth > month) {
+                            dayAnInt = myDay;
+                            monthAnInt = myMonth;
+                            setupDateAnTimeforAlarm(dayAnInt, monthAnInt,
+                                    yearAnInt, hrAnInt, minusAnInt);
+                        }
+
+
+                    } // for
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+
+    }   // alarm
+
     private void setupDateAnTimeforAlarm(int intDay,
                                          int intMonth,
                                          int intYear,
@@ -100,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        Log.d("9JuneV4", "calendar ตั่งต้น ==> " + calendar.toString());
+        Log.d("9JuneV4", "calendar ตั่งต้น ==> " + calendar.getTime().toString());
 
         calendar.set(Calendar.DAY_OF_MONTH, intDay);
         calendar.set(Calendar.MONTH, intMonth);
@@ -109,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, intMinis);
         calendar.set(Calendar.SECOND, 0);
 
-        Log.d("9JuneV4", "calendar ตัวส่ง ==> " + calendar.toString());
+        Log.d("9JuneV4", "calendar ตัวส่ง ==> " + calendar.getTime().toString());
 
         setAlarm(calendar);
 
@@ -250,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "ยินดีต้อนรับ [24] Calendar",
                         Toast.LENGTH_SHORT).show();
 
- //               startActivity(new Intent(MainActivity.this, CalendarActivity.class));
+                alarmByMyData(resultStrings[3]);
 
                 Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
                 intent.putExtra("ID_Card", resultStrings[3]);
