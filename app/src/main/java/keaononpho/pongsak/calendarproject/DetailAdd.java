@@ -2,8 +2,11 @@ package keaononpho.pongsak.calendarproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class DetailAdd extends AppCompatActivity {
 
@@ -11,8 +14,8 @@ public class DetailAdd extends AppCompatActivity {
     private TextView idCardTextView, dateTextView;
     private String dateString;
     private String[] loginStrings;
-
-
+    private EditText editText;
+    private TimePicker timePicker;
 
 
 
@@ -24,6 +27,9 @@ public class DetailAdd extends AppCompatActivity {
         //Bind
         idCardTextView = (TextView) findViewById(R.id.textView13);
         dateTextView = (TextView) findViewById(R.id.textView14);
+        editText = (EditText) findViewById(R.id.edtDetail);
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
 
 
         //Showview
@@ -37,7 +43,15 @@ public class DetailAdd extends AppCompatActivity {
 
     }//Main Method
     public void clickSaveDetailAdd(View view) {
-        finish();
-    }
+
+        int intHour = timePicker.getCurrentHour();
+        int intMinus = timePicker.getCurrentMinute();
+
+        Log.d("9JuneV2", "intHour ==> " + intHour);
+        Log.d("9JuneV2", "intMinus ==> " + intMinus);
+
+
+        //finish();
+    }   // clickSave
 
 }//Main Class
