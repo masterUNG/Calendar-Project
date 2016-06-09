@@ -21,13 +21,15 @@ import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     //Explici
     private EditText userEditText, passwordEditText;
     private String userString, passwordString;
     private MyManage myManage;
-
+    public static ArrayList<String> listValue;
 
 
     @Override
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Bind Widget
         bindWidget();
+
+        listValue = new ArrayList<String>();
+
+
 
         //Request SQLite
         myManage = new MyManage(this);
