@@ -1,5 +1,7 @@
 package keaononpho.pongsak.calendarproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,6 +56,25 @@ public class CalendarActivity extends AppCompatActivity {
     public void clickSelectDateCalendar(View view) {
 
         Log.d("9JuneV1", "myDate ==> " + myDateString);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.doremon48);
+        builder.setCancelable(false);
+        builder.setTitle("Confirm Date ?");
+        builder.setMessage("คุณต้องการกำหนด รายละเอียด ของวันที่ " + myDateString + " จริงๆ หรือ ?");
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
 
     }   // clickSelect
 
