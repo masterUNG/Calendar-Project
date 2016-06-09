@@ -53,6 +53,14 @@ public class DetailListView extends AppCompatActivity {
 
     }//Main Method
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.d("8JuneV3", "onRestart Work");
+        createListView();
+
+    }
 
     private void createListView() {
 
