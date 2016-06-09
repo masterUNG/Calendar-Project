@@ -2,6 +2,7 @@ package keaononpho.pongsak.calendarproject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -71,6 +72,12 @@ public class CalendarActivity extends AppCompatActivity {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                Intent intent = new Intent(CalendarActivity.this, DetailListView.class);
+                intent.putExtra("Login", loginStrings);
+                intent.putExtra("Date", myDateString);
+                startActivity(intent);
+
                 dialogInterface.dismiss();
             }
         });

@@ -1,18 +1,11 @@
 package keaononpho.pongsak.calendarproject;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-
-import java.util.Date;
 
 public class DetailListView extends AppCompatActivity {
 
@@ -20,6 +13,7 @@ public class DetailListView extends AppCompatActivity {
     private TextView idCardTextView, dateTextView;
     private ListView listView;
     private String idCardString, dateString;
+    private String[] loginStrings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +27,8 @@ public class DetailListView extends AppCompatActivity {
 
 
         //Showview
-        idCardString = getIntent().getStringExtra("ID_Card");
+        loginStrings = getIntent().getStringArrayExtra("Login");
+        idCardString = loginStrings[3];
         dateString = getIntent().getStringExtra("Date");
         idCardTextView.setText("ID Card  = " +idCardString);
         dateTextView.setText("Date = " + dateString);
@@ -46,7 +41,7 @@ public class DetailListView extends AppCompatActivity {
 
     public void clickAddDetail(View view) {
         Intent intent = new Intent(DetailListView.this, DetailAdd.class);
-        intent.putExtra("ID_Card", idCardString);
+        intent.putExtra("Login", loginStrings);
         intent.putExtra("Date", dateString);
         startActivity(intent);
 
