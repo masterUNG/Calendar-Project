@@ -16,6 +16,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class DetailListView extends AppCompatActivity {
@@ -73,7 +76,32 @@ public class DetailListView extends AppCompatActivity {
                 public void onResponse(Response response) throws IOException {
                     String strJSON = response.body().string();
                     Log.d("9JuneV3", "strJSON ==> " + strJSON);
-                }
+
+                    try {
+
+                        JSONArray jsonArray = new JSONArray(strJSON);
+
+                        String[] timeStrings = new String[jsonArray.length()];
+                        String[] detailStrings = new String[jsonArray.length()];
+
+                        for (int i=0;i<jsonArray.length();i++) {
+
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            timeStrings[i] = jsonObject.getString("Time");
+                            detailStrings[i] = jsonObject.getString("Detail");
+
+                        }   // for
+                        MyAdapter myAdapter = new MyAdapter(DetailListView.this,
+                                timeStrings, detailStrings);
+                        listView.setAdapter(myAdapter);
+
+
+                    } catch (Exception e) {
+                        Log.d("9JuneV3", "Error JSONarray ==> " + e.toString());
+                    }
+
+
+                }   // onResponse
             });
 
 
